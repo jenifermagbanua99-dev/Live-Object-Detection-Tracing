@@ -103,14 +103,16 @@ def video_frame_callback(frame):
 
 
 # -------------------------------
-# START STREAM
+# START STREAM (guarded to avoid re-init errors)
 # -------------------------------
-webrtc_streamer(
-    key="object-detection",
-    video_frame_callback=video_frame_callback,
-    async_processing=True,
-    rtc_configuration={
-        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-    },
-    media_stream_constraints={"video": True, "audio": False},
-)
+if "webrtc_started" not in st.session_state:
+    st.session_state["webrtc_started"] = True
+    webrtc_streamer(
+        key="object-detection",
+        video_frame_callback=video_frame_callback,
+        async_processing=True,
+        rtc_configuration={
+            "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
+        },
+        media_stream_constraints={"video": True, "audio": False},
+    )
