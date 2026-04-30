@@ -9,7 +9,9 @@ from datetime import datetime
 # -------------------------------
 # SETTINGS
 # -------------------------------
+ALERT_OBJECT = "person"   # Change this (e.g., "dog", "car")
 SAVE_FOLDER = "detections"
+
 os.makedirs(SAVE_FOLDER, exist_ok=True)
 
 # -------------------------------
@@ -26,12 +28,6 @@ model = load_model()
 # -------------------------------
 st.title("🎥 Live Object Detection & Tracing")
 st.write("Point your camera at objects to identify them in real-time.")
-
-# Sidebar control for alert object
-ALERT_OBJECT = st.sidebar.selectbox(
-    "Choose object to alert on:",
-    ["person", "dog", "car", "cat", "bicycle", "motorbike"]
-)
 
 # -------------------------------
 # CALLBACK FUNCTION
