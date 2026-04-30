@@ -9,9 +9,7 @@ from datetime import datetime
 # -------------------------------
 # SETTINGS
 # -------------------------------
-ALERT_OBJECT = "person"   # Change this (e.g., "dog", "car")
 SAVE_FOLDER = "detections"
-
 os.makedirs(SAVE_FOLDER, exist_ok=True)
 
 # -------------------------------
@@ -28,6 +26,12 @@ model = load_model()
 # -------------------------------
 st.title("🎥 Live Object Detection & Tracing")
 st.write("Point your camera at objects to identify them in real-time.")
+
+# Sidebar control for alert object
+ALERT_OBJECT = st.sidebar.selectbox(
+    "Choose object to alert on:",
+    ["person", "dog", "car", "cat", "bicycle", "motorbike"]
+)
 
 # -------------------------------
 # CALLBACK FUNCTION
@@ -46,9 +50,7 @@ def video_frame_callback(frame):
     annotated_frame = results[0].plot()
     alert_triggered = False
 
-    # -------------------------------
     # OBJECT COUNTING + ALERT CHECK
-    # -------------------------------
     if results[0].boxes is not None:
         class_ids = results[0].boxes.cls.tolist()
         names = results[0].names
@@ -76,9 +78,7 @@ def video_frame_callback(frame):
             )
             y_offset += 30
 
-    # -------------------------------
     # ALERT DISPLAY + CONTROLLED SAVE
-    # -------------------------------
     if alert_triggered:
         cv2.putText(
             annotated_frame,
