@@ -44,18 +44,25 @@ def video_frame_callback(frame):
     )
 
     annotated_frame = results[0].plot()
+
     alert_triggered = False
 
+    # -------------------------------
     # OBJECT COUNTING + ALERT CHECK
+    # -------------------------------
     if results[0].boxes is not None:
         class_ids = results[0].boxes.cls.tolist()
         names = results[0].names
 
         counts = {}
+
         for cid in class_ids:
             label = names[int(cid)]
+
+            # Count objects
             counts[label] = counts.get(label, 0) + 1
 
+            # Check alert condition
             if label == ALERT_OBJECT:
                 alert_triggered = True
 
@@ -74,7 +81,9 @@ def video_frame_callback(frame):
             )
             y_offset += 30
 
+    # -------------------------------
     # ALERT DISPLAY + CONTROLLED SAVE
+    # -------------------------------
     if alert_triggered:
         cv2.putText(
             annotated_frame,
@@ -86,7 +95,9 @@ def video_frame_callback(frame):
             3
         )
 
+        # Save only every 5 seconds (prevents storage overload)
         now = datetime.now()
+
         if not hasattr(video_frame_callback, "last_save"):
             video_frame_callback.last_save = now
 
@@ -99,7 +110,7 @@ def video_frame_callback(frame):
 
 
 # -------------------------------
-# START STREAM (guarded to avoid re-init errors)
+# START STREAM
 # -------------------------------
 webrtc_streamer(
     key="object-detection",
