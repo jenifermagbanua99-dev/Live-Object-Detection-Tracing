@@ -9,7 +9,7 @@ from datetime import datetime
 # -------------------------------
 # SETTINGS
 # -------------------------------
-ALERT_OBJECT = "person"   # Change this (e.g., "dog", "car")
+ALERT_OBJECT = "person"
 SAVE_FOLDER = "detections"
 os.makedirs(SAVE_FOLDER, exist_ok=True)
 
@@ -94,7 +94,12 @@ if "webrtc_started" not in st.session_state:
     )
 
     # Debug info
-    if ctx and ctx.state.playing:
-        debug_info.success("✅ WebRTC connection established, camera feed active.")
-    else:
-        debug_info.warning("⚠ Connection still pending... check camera permissions and TURN servers.")
+    if ctx:
+        if ctx.state.playing:
+            debug_info.success("✅ WebRTC connection established, camera feed active.")
+        else:
+            debug_info.warning("⚠ Still connecting... check camera permissions and TURN servers.")
+
+        # Show ICE connection state
+        if ctx.state.ice_connection_state:
+            st.sidebar.write(f"ICE state: {ctx.state.ice_connection_state}")
