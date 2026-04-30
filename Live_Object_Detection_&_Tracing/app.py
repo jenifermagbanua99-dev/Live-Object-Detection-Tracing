@@ -112,12 +112,31 @@ def video_frame_callback(frame):
 # -------------------------------
 # START STREAM
 # -------------------------------
-webrtc_streamer(
-    key="object-detection",
-    video_frame_callback=video_frame_callback,
-    async_processing=True,
-    rtc_configuration={
-        "iceServers": [{"urls": ["stun:stun.l.google.com:19302"]}]
-    },
-    media_stream_constraints={"video": True, "audio": False},
-)
+rtc_configuration = {
+    "iceServers": [
+        {"urls": ["stun:stun.l.google.com:19302"]},
+        {"urls": ["turn:relay.metered.ca:80"], "username": "openai", "credential": "openai"},
+        {"urls": ["turn:relay.metered.ca:443"], "username": "openai", "credential": "openai"},
+        {"urls": ["turn:relay.metered.ca:443?transport=tcp"], "username": "openai", "credential": "openai"}
+    ]
+}
+
+if "webrtc_started" not in st.session_state:
+    st.session_state["webrtc_started"] = True
+    ctx = webrtc_streamer(
+        key="object-detection",
+        video_frame_callback=video_frame_callback,
+        async_processing=True,
+        rtc_configuration=rtc_configuration,
+        media_stream_constraints={"video": True, "audio": False},
+    )
+
+    # Debug info in sidebar
+    if ctx:
+        if ctx.state.playing:
+            st.sidebar.success("✅ WebRTC connection established, camera feed active.")
+        else:
+            st.sidebar.warning("⚠ Still connecting... check camera permissions and TURN servers.")
+        if ctx.state.ice_connection_state:
+            st.sidebar.info(f"ICE state: {ctx.state.ice_connection_state}")
+
