@@ -1,8 +1,0 @@
-streamlit
-streamlit-webrtc>=0.47.0
-ultralytics
-opencv-python-headless
-av
-torch
-numpy
-tornado==6.2
