@@ -120,4 +120,3 @@ if "webrtc_started" not in st.session_state:
         },
         media_stream_constraints={"video": True, "audio": False},
     )
-
