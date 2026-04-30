@@ -1,8 +1,8 @@
 streamlit
-streamlit-webrtc
+streamlit-webrtc>=0.47.0
 ultralytics
 opencv-python-headless
 av
 torch
 numpy
-tornado
+tornado==6.2
