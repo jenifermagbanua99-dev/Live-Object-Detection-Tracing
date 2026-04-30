@@ -44,7 +44,6 @@ def video_frame_callback(frame):
     )
 
     annotated_frame = results[0].plot()
-
     alert_triggered = False
 
     # -------------------------------
@@ -55,14 +54,10 @@ def video_frame_callback(frame):
         names = results[0].names
 
         counts = {}
-
         for cid in class_ids:
             label = names[int(cid)]
-
-            # Count objects
             counts[label] = counts.get(label, 0) + 1
 
-            # Check alert condition
             if label == ALERT_OBJECT:
                 alert_triggered = True
 
@@ -95,9 +90,7 @@ def video_frame_callback(frame):
             3
         )
 
-        # Save only every 5 seconds (prevents storage overload)
         now = datetime.now()
-
         if not hasattr(video_frame_callback, "last_save"):
             video_frame_callback.last_save = now
 
