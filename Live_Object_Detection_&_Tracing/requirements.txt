@@ -3,3 +3,6 @@ streamlit-webrtc
 ultralytics
 opencv-python
 av
+torch
+numpy
+tornado
