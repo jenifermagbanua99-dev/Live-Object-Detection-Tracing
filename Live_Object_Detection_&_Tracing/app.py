@@ -9,7 +9,7 @@ from datetime import datetime
 # -------------------------------
 # SETTINGS
 # -------------------------------
-ALERT_OBJECT = "person"   # Change this (e.g., "dog", "car")
+ALERT_OBJECT = "specific"   # Change this (e.g., "dog", "car")
 SAVE_FOLDER = "detections"
 
 os.makedirs(SAVE_FOLDER, exist_ok=True)
